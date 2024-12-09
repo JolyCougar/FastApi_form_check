@@ -38,11 +38,22 @@ def determine_field_type(value: str) -> str:
 
 
 def match_template(data: Dict[str, str], templates: list) -> dict:
+    best_match = None
+    max_matches = 0
+
     for template in templates:
-        match = all(
-            field in data and determine_field_type(data[field]) == field_type
-            for field, field_type in template["fields"].items()
-        )
-        if match:
-            return template
-    return None
+        match_count = 0
+        all_fields_match = True
+
+        for field, field_type in template["fields"].items():
+            if field in data and determine_field_type(data[field]) == field_type:
+                match_count += 1
+            else:
+                all_fields_match = False
+                break
+
+        if all_fields_match and match_count > max_matches:
+            best_match = template
+            max_matches = match_count
+
+    return best_match
