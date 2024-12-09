@@ -4,7 +4,7 @@ from pymongo import MongoClient, errors
 
 def get_db():
     try:
-        client = MongoClient("mongodb://localhost:27017/")
+        client = MongoClient("mongodb://mongo:27017/")
         db = client["forms_db"]
         return db
     except errors.ConnectionFailure as e:
