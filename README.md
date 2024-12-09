@@ -36,6 +36,7 @@ docker-compose up --build -d
 ```
 python app/tests/test_requests.py
 ```
+-В ответе получим результат тестовых запросов.<br>
 -(Вариант 2)Что бы использовать пробные запросы необходимо создать ещё вкладку в терминале и ввести следующие команды:<br>
 ```
 docker ps
@@ -72,3 +73,4 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --log-level info
 ```
 python app/tests/test_requests.py
 ```
+-В ответе получим результат тестовых запросов.<br>
