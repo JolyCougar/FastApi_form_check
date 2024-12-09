@@ -1,10 +1,11 @@
 import json
+import os.path
 from pymongo import MongoClient, errors
 
 
 def get_db():
     try:
-        client = MongoClient("mongodb://mongo:27017/")
+        client = MongoClient(os.environ.get("MONGO_URL", "mongodb://localhost:27017/"))
         db = client["forms_db"]
         return db
     except errors.ConnectionFailure as e:
@@ -26,7 +27,6 @@ def insert_templates_to_db():
             print("Шаблоны успешно добавлены в базу данных.")
         except errors.BulkWriteError as e:
             print(f"Ошибка при добавлении данных в базу данных: {e}")
-
 
 
 def get_templates():
