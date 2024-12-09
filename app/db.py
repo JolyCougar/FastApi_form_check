@@ -13,17 +13,20 @@ def get_db():
 
 
 def insert_templates_to_db():
-    db = get_db()
-    templates_collection = db["templates"]
-    with open("app/templates.json", "r") as f:
-        templates_data = json.load(f)
-    try:
-        templates_collection.insert_many(templates_data, ordered=False)
-        print("Шаблоны успешно добавлены в базу данных.")
-    except errors.BulkWriteError as e:
-        print(f"Ошибка при добавлении данных в базу данных: {e}")
+    if not get_templates():
+        db = get_db()
+        templates_collection = db["templates"]
+        try:
+            with open("app/templates.json", "r") as f:
+                templates_data = json.load(f)
+        except FileNotFoundError:
+            print("Файл не найден")
+        try:
+            templates_collection.insert_many(templates_data, ordered=False)
+            print("Шаблоны успешно добавлены в базу данных.")
+        except errors.BulkWriteError as e:
+            print(f"Ошибка при добавлении данных в базу данных: {e}")
 
-    return templates_data
 
 
 def get_templates():
@@ -34,7 +37,4 @@ def get_templates():
     if templates:
         return templates
     else:
-        insert_templates_to_db()
-
-
-
+        print('Шаблоны в БД отсутствуют')
